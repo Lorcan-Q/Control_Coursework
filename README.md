@@ -1,2 +1,3 @@
-# Control_Coursework
-2nd Year SESE Coursework
+# Control Coursework
+
+This repository is used for the source versioning of our python + LaTeX code for the ELE2024 Group Control Coursework.
