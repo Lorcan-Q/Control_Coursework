@@ -16,7 +16,8 @@ k = 1880
 b = 10.4
 phi = (42/180 * np.pi)
 
-def system(state,t):    # Non-Linear System
+
+def non_linear_system(state,t):    # Non-Linear System
     x = state[0]
     xd = state[1]
     I = state[2]
@@ -35,9 +36,12 @@ x = 0.75*(d + ((m*g*np.sin(phi))/k)) + 0.25*delta
 state0 = [x, 0, 0]
 t = np.linspace(0.0, 1.0, 100)
 
-state = odeint(system, state0, t)
+state = odeint(non_linear_system, state0, t)
 
 plt.plot(t, state)
-plt.legend(('$x$', '$\dot{x}$', 'I'))
+plt.title("Question B2 - Non-Linear dynamics")
+plt.xlabel('Time, t (s)')
+plt.ylabel('STATES')
+plt.legend(('$x$ $(m)$ ', '$\dot{x}$ $(ms^{-1})$', '$I$ $(A)$'))
 plt.grid()
 plt.show()

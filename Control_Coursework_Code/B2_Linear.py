@@ -18,7 +18,7 @@ b = 10.4
 phi = (42/180 * np.pi)
 
 
-def linearSystem(state,t):    # Non-Linear System
+def linear_system(state, t):
     x = state[0]
     xd = state[1]
     I = state[2]
@@ -27,7 +27,6 @@ def linearSystem(state,t):    # Non-Linear System
     v /= (c ** 0.5)
 
     a1_val = (2 * I) / ((delta - x) ** 2)
-    a2_val = (2 * (v/R ** 2)) / ((delta - x) ** 3)
     a3_val = 1 / (L0 + L1 * np.exp(-alpha * (delta - x)))
 
     xdd = (5/7*m)*(c*(a1_val*(I - v/R)) - b*xd)
@@ -39,11 +38,14 @@ def linearSystem(state,t):    # Non-Linear System
 x = 0.75*(d + ((m*g*np.sin(phi))/k)) + 0.25*delta
 
 state0 = [x, 0, 0]
-t = np.linspace(0.0, 1.0, 100)
+t = np.linspace(0.0, 5.0, 100)
 
-state = odeint(linearSystem, state0, t)
+state = odeint(linear_system, state0, t)
 
 plt.plot(t, state)
-plt.legend(('$x$', '$\dot{x}$', 'I'))
+plt.title("Question B2 - Linear dynamics")
+plt.xlabel('Time, t (s)')
+plt.ylabel('STATES')
+plt.legend(('$x$ $(m)$ ', '$\dot{x}$ $(ms^{-1})$', '$I$ $(A)$'))
 plt.grid()
 plt.show()
