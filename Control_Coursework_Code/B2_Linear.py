@@ -30,7 +30,7 @@ def linearSystem(state,t):    # Non-Linear System
     a2_val = (2 * (v/R ** 2)) / ((delta - x) ** 3)
     a3_val = 1 / (L0 + L1 * np.exp(-alpha * (delta - x)))
 
-    xdd = (5/7*m)*(c*(a1_val*(I - v/R) + a2_val*x) - k*x - b*xd)
+    xdd = (5/7*m)*(c*(a1_val*(I - v/R)) - b*xd)
     Id = a3_val*(-R*I + v)
 
     return [xd, xdd, Id]
