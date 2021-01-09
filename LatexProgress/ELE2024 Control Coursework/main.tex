@@ -20,6 +20,7 @@
 \usepackage[margin=0.7in]{geometry}
 \usepackage{color}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{multicol}
 
 \input{toc-config.tex}
 
@@ -31,7 +32,7 @@
 
 
 \definecolor{CommentGreen}{rgb}{0.0,0.4,0.0}
-\definecolor{Background}{rgb}{0.9,1.0,0.85}
+\definecolor{Background}{rgb}{0.9,0.9,09}
 \definecolor{lrow}{rgb}{0.914,0.918,0.922}
 \definecolor{drow}{rgb}{0.725,0.745,0.769}
 \definecolor{darkGreen}{RGB}{38,178,0}
@@ -102,10 +103,9 @@
 \maketitle
 \end{nouppercase}
 
+\section{Introduction}
 
-\section{Part A}
-
-\subsection{A1}\label{sec:A1}
+\par Throughout this project, the nature of a system of a wooden ball on an inclined plane connected to a spring and attracted to an electromagnet was investigated. This system is outlined in figure~\ref{fig:A1Diagram}.
 
 \begin{figure}[h]
 \label{fig:A1Diagram}
@@ -114,13 +114,17 @@
  \caption{System of the wooden ball on an inclined plane with first principles applied.}
 \end{figure}
 
+\section{Part A}
+
+\subsection{A1}\label{sec:A1}
+
 \par First, the forces acting on the wooden ball have to be resolved, therefore the vertical forces, i.e. forces acting perpendicular to the slope, can be modelled as:
 
 \begin{equation}
     \color{darkGreen}{N-mg\cos{\phi}=0}\color{black}
 \end{equation}
 \\
-Next, the forces working parallel to the slope can be modelled as:
+\par Next, the forces working parallel to the slope can be modelled as:
 
 \begin{equation}
 \label{eqn:ForcesOrg}
@@ -131,8 +135,8 @@ Next, the forces working parallel to the slope can be modelled as:
 \begin{equation}
     F_{mag} = c(\frac{I}{\delta-x})^2
 \end{equation}
-
-The torque can be resolved as below in equation~\ref{eqn:torque}.
+\\
+\par The torque can be resolved as below in equation~\ref{eqn:torque}.
 
 \begin{align}
     Torque(M)=&-TR=I\ddot{\theta}
@@ -240,33 +244,80 @@ z_2
 
 \subsection{A4}\label{sec:A4}
 
-\par Within section A4, the equation acheived 
-\begin{equation}
-    \Psi(z_3,z_1)=\frac{z_3^2}{(\delta-z_1)^2}\approx\Psi_1(z_3^e,z_1^e)+\frac{\delta\Psi}{\delta z_3}\mid_{z_3^e,z_1^e}(z_3-z_3^e)+\frac{\delta\Psi}{\delta z_1}\mid_{z_3^e,z_1^e}(z_1-z_1^e)
-\end{equation}
+\par Within section A4, the system derived in section~\ref{sec:A3} is linearised at an equilibrium point using derivation variables. This is accomplished by utilising Taylor's approximation theorem, i.e.
 
 \begin{gather}
-    a_1=\frac{2z_3^e}{(\delta-z_1^e)^2}
-    \\
-    a_2=\frac{2(z_3^e)^2}{(\delta-z_1)^3}
-    \\
-    a_3=\frac{1}{L_o+L_1e^{\alpha(z_1^e-\delta)}}
-    \\
-    a_4=\frac{\alpha L_1e^{\alpha(z_1^e-\delta)}(V^e-z_3^eR)}{L_o+L_1e^{\alpha(z_1^e-\delta)}}
-    \label{eqn:a_4}\\
-    a_4=0
-    \notag
+    \phi(t)=\phi'(t)+(\phi''(t)(x-t)-\phi'(t))+(\frac{\phi^{(3)}(t)}{2!}(x-t)^2-\frac{\phi^{(2)}(t)}{1!}(x-t))+...
+    \notag\\
+    ...+(\frac{\phi^{(k+1)}(t)}{k!}(x-t)^k - \frac{\phi^{(k)}(t)}{k-1!}(x-t)^k-1) = \frac{\phi^{(k+1)}(t)}{k!}(x-t)^k
 \end{gather}
+\\
+\begin{gather}
+    \Psi(z_3,z_1)=\frac{z_3^2}{(\delta-z_1)^2}\approx\Psi_1(z_3^e,z_1^e)+\frac{\delta\Psi}{\delta z_3}\mid_{z_3^e,z_1^e}(z_3-z_3^e)+\frac{\delta\Psi}{\delta z_1}\mid_{z_3^e,z_1^e}(z_1-z_1^e)
+    \notag\\
+    \frac{\delta\Psi_1}{\delta z_3}=\frac{2z_3}{(\delta-z_1)^2}\color{red}=a_1\color{black}
+    \notag\\
+    \frac{\delta\Psi_1}{\delta z_1}=\frac{2z_3^2}{(\delta-z_1)^3}\color{red}=a_2\color{black}
+\end{gather}
+
+Values then evaluated at zero:
+
+\begin{align} %attempted to save some space by putting the equations next to each other, if it's too messy let me know
+    \frac{\delta\Psi}{\delta z_3}\mid_{z_3^e,z_1^e}=\frac{2z_3^e}{(\delta-z_1^e)^2}=a_1,
+    &&
+    \frac{\delta\Psi}{\delta z_1}\mid_{z_3^e,z_1^e}=\frac{2(z_3^e)^2}{(\delta-z_1)^3}=a_2
+    \notag\\
+    \frac{\delta\Psi_2}{\delta V}\mid_{z_3^e,z_1^e}=\frac{1}{L_o+L_1e^{\alpha(z_1^e-\delta)}}=a_3,
+    &&
+    \frac{\delta\Psi_2}{\delta z_3}\mid_{z_3^e,z_1^e}=\frac{\alpha L_1e^{\alpha(z_1^e-\delta)}(V^e-z_3^eR)}{L_o+L_1e^{\alpha(z_1^e-\delta)}}=a_4
+    \label{eqn:a_4}\\
+    &&a_4=0
+    \notag
+\end{align}
 \\
 \par However, because $V_e=z_3^eR$, equation~\ref{eqn:a_4} will simply be written as $a_4=0$.
 
 \subsection{A5}\label{sec:A5} 
 
+Initially the Laplace transfer function is applied to the linearised system:
 
+\begin{align}
+    &\color{darkGreen}(1)\color{black}\;\;\; s\bar{z_1}(s)= s\bar{z_2}(s)
+    \\
+    &\color{darkGreen}(2)\color{black}\;\;\; s\bar{z_2}(s) = \frac{5}{7m}[c(a_1\bar{z_3}(s))-k\bar{z_1}(s)-b\bar{z_2}(s)]
+    \\
+    &\color{darkGreen}(3)\color{black}\;\;\; s\bar{z_3}(s) = a_3[\bar{V}(s)-R\bar{z_3}(s)]-a_4\bar{z_1}(s) = a_3[\bar{V}(s)-R\bar{z_3}(s)]
+    \\
+    &\color{darkGreen}=>(2)\color{black}\;\;\; \bar{z_3}(s) = \frac{\bar{z_1}(s)}{ca_1}(\frac{7s^2}{5m}+bs+k+ca_2)
+    \\
+    &\color{darkGreen}=>(3)\color{black}\;\;\; \frac{\bar{z_1}(s)}{\bar{V}(s)} = \frac{ca_1a_3}{(s+a_3R)(\frac{7s^2}{5m}+bs+k-ca_2)}
+\end{align}
+\\
+\par This is a third-order transfer function, thus has three poles. This can be modelled using the product of a first and second order transfer function for analytical purposes. Furthermore, the system's response can be approximated using the sum of the responses from the decomposed functions.
+
+\par Due to the nature of the summation, oscillations present in an impulse reaction from the second-order system would become apparent in the overall system's impulse response. These oscillations would be created due to the second order system being under-damped.
+\\
+\par A second order transfer function has the form:
+
+\begin{equation}
+    G(s) = \frac{k}{\tau^2s^2+2\zeta\tau s+1}
+\end{equation}
+
+\par where $k$, $\tau$, $\zeta >$ 0 and $k$ is the static gain, $\zeta$ is the damping factor and $\tau$ is the time constant of the system.
+\par An undamped second order system is categorised by a pair of complex, conjugate, non-real poles. The nature of the poles can be identified by analysing the discriminant of the denominator.
+
+\begin{align*}
+    \Delta\tau^2s^2+2\zeta\tau s+1&=(2\zeta\tau)^2 - 4(\tau^2)(1)
+    \\
+    &=4\zeta^2\tau^2-4\tau^2
+    \\
+    &=4\tau^2(\zeta^2-1)
+\end{align*}
 
 \section{Part B}
-% You can write comments like this
 
+\begin{lstlisting}[language=python]
 
+\end{lstlisting}
 
 \end{document}
