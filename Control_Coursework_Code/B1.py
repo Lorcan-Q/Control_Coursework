@@ -26,7 +26,6 @@ for x in span:
     results.append(z3e.subs(z1e, x) * R)
 
 index = results.index(max(results))
-
 plt.plot(span, results)
 plt.title("Question B1 - $V^e$ dynamics")
 plt.xlabel('Equilibrium position of ball, $x^e$  (m)')

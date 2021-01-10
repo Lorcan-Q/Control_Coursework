@@ -1,7 +1,9 @@
 import control as ctrl
 import numpy as np
 import matplotlib.pyplot as plt
-import sympy as sym
+
+plt.style.use("seaborn-bright")                         # Setting the styles for graphing.
+plt.rcParams["font.size"] = 12
 
 m = 0.425
 g = 9.81
@@ -17,22 +19,34 @@ k = 1880
 b = 10.4
 phi = (42/180 * np.pi)
 
-z1e = 0.467
-ve = 0.2
-z3e = 0.017
+xe = 0.75*(d + ((m*g*np.sin(phi))/k)) + 0.25*delta
+ve = R*(delta - xe) * ((k * (xe - d) - m * g * np.sin(phi)) ** 0.5)
+ve /= (c ** 0.5)
+Ie = ve/R
 
-a1 = (2 * z3e) / ((delta - z1e)**2)
-a2 = (2 * (z3e**2)) / ((delta - z1e)**3)
-a3 = 1 / (L0+L1*np.exp(-alpha*(delta-z1e)))
+a1_val = (10 * c * Ie) / (7 * m * ((delta - xe) ** 2))
+a2_val = (5 / (7 * m)) * (-k + ((2 * c * (Ie ** 2)) / ((delta - xe) ** 3)))
+a3_val = (5 * b) / (7 * m)
+a4_val = 1 / (L0 + (L1 * np.exp((-alpha * (delta - xe)))))
 
-tf_num = [c*a1*a3]
-tf_den = [(7*m/5), (b+((7*m/5)*a3*R*m)), (-k-c*a2+a3*R*b), (-a3*R*k - c*a2*a3*R)]
+tf1 = ctrl.TransferFunction(1, [1, (a4_val*R)])
+tf2 = ctrl.TransferFunction(1, [1, a3_val, -a2_val])
 
-Gx = ctrl.TransferFunction(tf_num, tf_den)
+Gx = ctrl.series(a1_val*a4_val, tf1, tf2)
 
 Gx_imp, y_imp = ctrl.impulse_response(Gx)
 Gx_step, y_step = ctrl.step_response(Gx)
 
 plt.plot(Gx_imp, y_imp)
+plt.grid()
+plt.title("Question B3 - Impulse Response")
+plt.xlabel('Time, t (s)')
+plt.ylabel('Equilibrium Displacement, $\overline{X}$ ($m$)')
+plt.show()
+
 plt.plot(Gx_step, y_step)
+plt.title("Question B3 - Step Response")
+plt.xlabel('Time, t (s)')
+plt.ylabel('Equilibrium Displacement, $\overline{X}$ ($m$)')
+plt.grid()
 plt.show()
