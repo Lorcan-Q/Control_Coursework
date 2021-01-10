@@ -21,6 +21,7 @@
 \usepackage{color}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{multicol}
+\usepackage{soul}
 
 \input{toc-config.tex}
 
@@ -103,9 +104,9 @@
 \maketitle
 \end{nouppercase}
 
-\section{Introduction}
+\section*{Introduction}
 
-\par Throughout this project, the nature of a system of a wooden ball on an inclined plane connected to a spring and attracted to an electromagnet was investigated. This system is outlined in figure~\ref{fig:A1Diagram}.
+\par Throughout this project, the nature of a system of a wooden ball on an inclined plane connected to a spring and attracted to an electromagnet was investigated. This system is outlined in figure~\ref{fig:A1Diagram}. For part B of this project, Python was used to simulate the experiments performed on the system and the code used is within this \href{https://github.com/Lorcan-Q/Control_Coursework}{github repositry}.
 
 \begin{figure}[h]
 \label{fig:A1Diagram}
@@ -116,14 +117,15 @@
 
 \section{Part A}
 
-\subsection{A1}\label{sec:A1}
+\subsection{A1 - System Modelling}\label{sec:A1}
 
-\par First, the forces acting on the wooden ball have to be resolved, therefore the vertical forces, i.e. forces acting perpendicular to the slope, can be modelled as:
+\par To enable the system to be modeled as a set of ordinary differential equations, first principles are applied to the system. Obtaining equations requires the forces acting on the wooden ball be resolved; therefore the vertical forces, i.e. forces acting perpendicular to the slope, can be modelled as:
 
 \begin{equation}
     \color{darkGreen}{N-mg\cos{\phi}=0}\color{black}
 \end{equation}
-\\
+
+
 \par Next, the forces working parallel to the slope can be modelled as:
 
 \begin{equation}
@@ -144,7 +146,7 @@
     T =& \frac{-I\ddot{\theta}}{R}
     \label{eqn:torque}
 \end{align}
-\\
+
 \par Then, by using the arc equation; $s=R(-\theta)$ and equation~\ref{eqn:torque}, $\ddot{\theta}$ can be taken as $-\frac{\ddot{x}}{R}$ which means the torque can be defined as:
 
 \begin{align}
@@ -177,7 +179,7 @@
     \dot{I}=\frac{1}{L_O+L_1e^{-\alpha(\delta-x)}}(V-RI)
 \end{gather}
 
-\subsection{A2}\label{sec:A2}
+\subsection{A2 - State Space Representation}\label{sec:A2}
 
 \par The state space representation equation will be in the form of equation~\ref{eqn:ssr} below:
 
@@ -206,7 +208,7 @@ z_3=I
 \end{equation}
 
 \begin{equation}
-    \dot{z_2}=\frac{5}{7m}(mg\sin{\phi}+c[\frac{z_3}{(\delta-z_1)}]-k(z_1-d)-bz_2),
+    \dot{z_2}=\frac{5}{7m}(mg\sin{\phi}+c[\frac{z_3}{(\delta-z_1)}]-k(z_1-d)-bz_2)
 \end{equation}
 \\
 \par Then, written in state space representation, the equation derived in part~\ref{sec:A1} will be displayed as shown below:
@@ -220,6 +222,14 @@ z_3=I
 \begin{equation}
 \bm{\dot{z}}=
 \begin{bmatrix}
+\dot{z_1}
+\\
+\dot{z_2}
+\\
+\dot{z_3}
+\end{bmatrix}
+=
+\begin{bmatrix}
 z_2
 \\
 \frac{5}{7m}(mg\sin{\phi}+c[\frac{z_3}{(\delta-z_1}]-k(z_1-d)-bz_2)
@@ -227,8 +237,8 @@ z_2
 \frac{V-z_3R}{L_o+L_1^{-\alpha(\delta-x)}}
 \end{bmatrix}
 \end{equation}
-
-\subsection{A3}\label{sec:A3} 
+\\
+\subsection{A3 - Characterising the Equilibrium Point.}\label{sec:A3} 
 
 \par Characterising the equilibrium point: $f(z^e,v^e)=0$
 
@@ -240,11 +250,27 @@ z_2
     0=\frac{V-z_3R}{L_o+L_1^{-\alpha(\delta-x)}}
 \end{gather}
 
-\par As $z_2^e=0$, the term can be omitted from other equations.
+\par As $z_2^e=0$, the term can be omitted from other equations. From this set of equations, $V^e$ can be evaluated as $I^eR$.
 
 \subsection{A4}\label{sec:A4}
 
-\par Within section A4, the system derived in section~\ref{sec:A3} is linearised at an equilibrium point using derivation variables. This is accomplished by utilising Taylor's approximation theorem, i.e.
+\par Subtracting:
+
+\begin{gather}
+    \dot{z_1}=z_2-z_2^e
+    \\
+    \dot{z_2} = \frac{5}{7m}(mg\sin{\phi}+\frac{cz_3^2}{(\delta-z_1)^2}-k(z_1-d)-bz_2)-\frac{5}{7m}(mg\sin{\phi}+\frac{c(z_3^e)^2}{(\delta-z_1^e)^2}-k(z_1^e-d))
+    \label{eqn:z_2}\\
+    \dot{z_3}=\frac{V-z_3R}{L_o+L_1^{-\alpha(\delta-z_1)}}-\frac{V^e-z_3^eR}{L_o+L_1^{-\alpha(\delta-z_1^e)}}
+\end{gather}
+\\
+\par Next, the only equation that can be simplified is equation~\ref{eqn:z_2} and will be simplified as shown below:
+
+\begin{gather}
+    \dot{z_2} = \frac{5}{7m}[c(\frac{z_3^2}{(\delta-z_1)^2}-\frac{(z_3^e)^2}{(\delta-z_1^e)^2})-k(z_1-z_1^e)-bz_2]
+\end{gather}
+
+\par Within section A4, the system derived in section~\ref{sec:A3} is linearised at an equilibrium point using derivation variables. The actual values are close to the values at equilibrium during linearisation. This is accomplished by utilising Taylor's approximation theorem, i.e.
 
 \begin{gather}
     \phi(t)=\phi'(t)+(\phi''(t)(x-t)-\phi'(t))+(\frac{\phi^{(3)}(t)}{2!}(x-t)^2-\frac{\phi^{(2)}(t)}{1!}(x-t))+...
@@ -252,48 +278,89 @@ z_2
     ...+(\frac{\phi^{(k+1)}(t)}{k!}(x-t)^k - \frac{\phi^{(k)}(t)}{k-1!}(x-t)^k-1) = \frac{\phi^{(k+1)}(t)}{k!}(x-t)^k
 \end{gather}
 \\
+\par Linearise the $\dot{z_2}$ equation then plug the linear equation back into the non-linear equation using Taylor's approximation theorem:
+
+
+\begin{align}
+    \dot{z_2}&=\frac{5c}{7m}(\frac{2z_3^e}{(\delta-z_1^e)^2}(\bar{z_3})+\frac{2(z_3^e)^2}{(\delta-z_1^e)^3}(\bar{z_1}))-\frac{5k}{7m}(\bar{z_1})-\frac{5b}{7m}(\bar{z_2})
+    \\
+    &=\frac{10cz_3^e}{7m(\delta-z_1^e)^2}(\bar{z_3})+\frac{10c(z_3^e)^2}{7m(\delta-z_1^e)^3}(\bar{z_1})-\frac{5k}{7m}(\bar{z_1})-\frac{5b}{7m}(\bar{z_2})
+    \\
+    &=\frac{10cz_3^e}{7m(\delta-z_1^e)^2}(\bar{z_3})+\frac{5}{7m}(\frac{2c(z_3^e)^2}{(\delta-z_1^e)^3}-k)(\bar{z_1})-\frac{5b}{7m}(\bar{z_2})
+    \\
+    &=\color{red}a_1\color{black}\bar{z_3} + \color{red}a_2\color{black}\bar{z_1} - \color{red}a_3\color{black}\bar{z_2}
+\end{align}
+\\
+\par This provides values for \color{red}$a_1$\color{black}, \color{red}$a_2$ \color{black}and \color{red}$a_3$\color{black}
+
 \begin{gather}
     \Psi(z_3,z_1)=\frac{z_3^2}{(\delta-z_1)^2}\approx\Psi_1(z_3^e,z_1^e)+\frac{\delta\Psi}{\delta z_3}\mid_{z_3^e,z_1^e}(z_3-z_3^e)+\frac{\delta\Psi}{\delta z_1}\mid_{z_3^e,z_1^e}(z_1-z_1^e)
     \notag\\
-    \frac{\delta\Psi_1}{\delta z_3}=\frac{2z_3}{(\delta-z_1)^2}\color{red}=a_1\color{black}
+    \frac{\delta\Psi_1}{\delta z_3}=\frac{10cz_3}{7m(\delta-z_1)^2}\color{red}=a_1\color{black}
     \notag\\
-    \frac{\delta\Psi_1}{\delta z_1}=\frac{2z_3^2}{(\delta-z_1)^3}\color{red}=a_2\color{black}
+    \frac{\delta\Psi_1}{\delta z_1}=\frac{5}{7m}(\frac{2c(z_3)^2}{(\delta-z_1)^3}-k)\color{red}=a_2\color{black}
 \end{gather}
 
-Values then evaluated at zero:
+\par Next, a value for $\frac{\delta\Psi_2}{\delta z_3}$ must be calculated:
+
+\begin{equation}
+    \dot{z_3}=\frac{V-z_3R}{L_o+L_1^{-\alpha(\delta-z_1)}}-\frac{V^e-z_3^eR}{L_o+L_1^{-\alpha(\delta-z_1^e)}}
+\end{equation}
+
+\par Insert linearisation for A4 partial derivatives:
+
+\begin{align}
+    \dot{z_3}&=\frac{\bar{V}}{L_o+L_1^{-\alpha(\delta-z_1)}}-\frac{R\bar{z_3}}{L_o+L_1^{-\alpha(\delta-z_1^e)}}
+    \notag\\
+    &=\frac{1}{L_o+L_1e^{\alpha(z_1^e-\delta)}}(\bar{V}-R\bar{z_3})
+    \notag\\
+    &=\color{red}a_4\color{black}(\bar{V}-R\bar{z_3})
+\end{align}
+
+\par Values are then evaluated at zero:
 
 \begin{align} %attempted to save some space by putting the equations next to each other, if it's too messy let me know
-    \frac{\delta\Psi}{\delta z_3}\mid_{z_3^e,z_1^e}=\frac{2z_3^e}{(\delta-z_1^e)^2}=a_1,
+    \frac{\delta\Psi}{\delta z_3}\mid_{z_3^e,z_1^e}=\frac{10cz_3^e}{7m(\delta-z_1^e)^2}=a_1,
     &&
-    \frac{\delta\Psi}{\delta z_1}\mid_{z_3^e,z_1^e}=\frac{2(z_3^e)^2}{(\delta-z_1)^3}=a_2
+    \frac{\delta\Psi}{\delta z_1}\mid_{z_3^e,z_1^e}=\frac{5}{7m}(\frac{2c(z_3^e)^2}{(\delta-z_1^e)^3}-k)=a_2
     \notag\\
-    \frac{\delta\Psi_2}{\delta V}\mid_{z_3^e,z_1^e}=\frac{1}{L_o+L_1e^{\alpha(z_1^e-\delta)}}=a_3,
+    \frac{\delta\Psi_2}{\delta V}\mid_{z_3^e,z_1^e}=\frac{5b}{7m}=a_3,
     &&
-    \frac{\delta\Psi_2}{\delta z_3}\mid_{z_3^e,z_1^e}=\frac{\alpha L_1e^{\alpha(z_1^e-\delta)}(V^e-z_3^eR)}{L_o+L_1e^{\alpha(z_1^e-\delta)}}=a_4
-    \label{eqn:a_4}\\
-    &&a_4=0
-    \notag
+    \frac{\delta\Psi_2}{\delta z_3}\mid_{z_3^e,z_1^e}=\frac{1}{L_o+L_1e^{\alpha(z_1^e-\delta)}}=a_4
+    \label{eqn:a_4}
 \end{align}
 \\
-\par However, because $V_e=z_3^eR$, equation~\ref{eqn:a_4} will simply be written as $a_4=0$.
+%\par However, because $V_e=z_3^eR$, equation~\ref{eqn:a_4} will simply be written as $a_4=0$.
 
 \subsection{A5}\label{sec:A5} 
 
-Initially the Laplace transfer function is applied to the linearised system:
+\par Initially the Laplace transfer function is applied to the linearised system:
 
 \begin{align}
-    &\color{darkGreen}(1)\color{black}\;\;\; s\bar{z_1}(s)= s\bar{z_2}(s)
+    &\color{darkGreen}(1)\color{black}\;\;\; s\bar{z_1}(s) {}={} s\bar{z_2}(s)
     \\
-    &\color{darkGreen}(2)\color{black}\;\;\; s\bar{z_2}(s) = \frac{5}{7m}[c(a_1\bar{z_3}(s))-k\bar{z_1}(s)-b\bar{z_2}(s)]
+    &\color{darkGreen}(2)\color{black}\;\;\; s\bar{z_2}(s) {}={} a_1\bar{z_3}+a_2\bar{z_1}-a_3\bar{z_2}
     \\
-    &\color{darkGreen}(3)\color{black}\;\;\; s\bar{z_3}(s) = a_3[\bar{V}(s)-R\bar{z_3}(s)]-a_4\bar{z_1}(s) = a_3[\bar{V}(s)-R\bar{z_3}(s)]
+    &\color{darkGreen}(3)\color{black}\;\;\; s\bar{z_3}(s) {}={} a_4\bar{V}-a_4R\bar{z_3}
     \\
-    &\color{darkGreen}=>(2)\color{black}\;\;\; \bar{z_3}(s) = \frac{\bar{z_1}(s)}{ca_1}(\frac{7s^2}{5m}+bs+k+ca_2)
-    \\
-    &\color{darkGreen}=>(3)\color{black}\;\;\; \frac{\bar{z_1}(s)}{\bar{V}(s)} = \frac{ca_1a_3}{(s+a_3R)(\frac{7s^2}{5m}+bs+k-ca_2)}
+    &\color{darkGreen}(1)\rightarrow(2)\color{black}\;\;\; s(s\bar{z_1}) {}={} a_1\bar{z_3}+a_2\bar{z_1}-a_3\bar{z_2}
+    \notag\\
+    &\color{darkGreen}(4)\color{black}\;\;\; \bar{z_3} {}={} \frac{z_1(s^2+a_3s-a_2)}{a_1}
+    \notag
 \end{align}
 \\
+\par Inserting \color{darkGreen}(4)\color{black}:
+
+\begin{equation}
+    \frac{\bar{z_1}}{\bar{V}}=\frac{a_1a_4}{(s+a_4R)(s^2+a_3s-a_2)}\color{red}= G_x\color{black}
+\end{equation}
+\\
+
 \par This is a third-order transfer function, thus has three poles. This can be modelled using the product of a first and second order transfer function for analytical purposes. Furthermore, the system's response can be approximated using the sum of the responses from the decomposed functions.
+
+\begin{equation}
+    G_x = a_1a_4\cdot(\frac{1}{s+a_4R})(\frac{1}{s^2+a^3s-a_2})
+\end{equation}
 
 \par Due to the nature of the summation, oscillations present in an impulse reaction from the second-order system would become apparent in the overall system's impulse response. These oscillations would be created due to the second order system being under-damped.
 \\
@@ -304,7 +371,7 @@ Initially the Laplace transfer function is applied to the linearised system:
 \end{equation}
 
 \par where $k$, $\tau$, $\zeta >$ 0 and $k$ is the static gain, $\zeta$ is the damping factor and $\tau$ is the time constant of the system.
-\par An undamped second order system is categorised by a pair of complex, conjugate, non-real poles. The nature of the poles can be identified by analysing the discriminant of the denominator.
+\par An under-damped second order system is categorised by a pair of complex, conjugate, non-real poles. The nature of the poles can be identified by analysing the discriminant of the denominator.
 
 \begin{align*}
     \Delta\tau^2s^2+2\zeta\tau s+1&=(2\zeta\tau)^2 - 4(\tau^2)(1)
@@ -314,7 +381,67 @@ Initially the Laplace transfer function is applied to the linearised system:
     &=4\tau^2(\zeta^2-1)
 \end{align*}
 
+Hence, a damping factor $0 < \zeta < 1$, would create a negative discriminant indicating the system is under-damped due to the presence of a pair of non-real conjugate poles.
+\\
+\par Equating the second-order transfer function's co-coefficients produces:
+
+\begin{align*}
+    \tau^2=1 && 2\zeta\tau&=a_3
+    \\
+    \tau=1 && 2\zeta&=a_3
+    \\
+    && \zeta &= \frac{5b}{7m} \cdot \frac{1}{2}
+    \\
+    && &=\frac{5b}{14m}
+\end{align*}
+
+\par The system would present oscillations from an impulse response given that:
+
+\begin{equation}
+    0 < \frac{5b}{14m} < 1
+\end{equation}
+\\
+
 \section{Part B}
+
+%overleaf has an issue with equilibrate however it seems fine to me
+\par Due to the forces acting on the system, the ball is only able to equilibrate within a defined space along the plane; utilising the characterised equilibrium points defined in section~\ref{sec:A3}, this space can be defined:
+
+\begin{gather*}
+    0=\frac{V^e-z_3^eR}{L_o+L_1^{-\alpha(\delta-z_1^e)}} \rightarrow V^e = z_3^eR
+    \\
+    0 = \frac{5}{7m}[mg\sin{\phi}+\frac{c(z_3^e)^2}{(\delta-z_1^e)^2}-k(z_1^e-d)]
+    \\
+    0 = mg\sin{\phi}(\delta-z_1^e)^2 + c(z_3^e)^2 - k(z_1^e-d)(\delta-z_1^e)^2
+    \\
+    z_3^e = \frac{(\delta-z_1^e)(k(z_1^e-d)-mg\sin{\phi})^\frac{1}{2}}{\sqrt{c}}
+\end{gather*}
+
+\par Therefore:
+
+\begin{equation}
+\label{eqn:V^e}
+    V^e = \frac{R(\delta-z_1^e)(k(z_1^e-d)-mg\sin{\phi})^\frac{1}{2}}{\sqrt{c}}
+\end{equation}
+\\
+\par Evidently from these equations, inputting a value of $z_1^e(x^e) \leq (\frac{mg\sin{\phi}}{k}+d)$ would result in the voltage and current becoming undefined, i.e. resulting in a zero or imaginary value. Furthermore, a value of $z_1^e(x^e) \geq d$ would create a zero or negative result for the equilibrium values which indicate that the electromagnet polarity has switched, thus the ball would not achieve equilibrium. These derivations enable the space to be defined as:
+
+\begin{equation}
+    x_{min} < x^e < x_{max}
+\end{equation}
+\\
+\par Where $x_{min} = d + \frac{mg\sin{\phi}}{k}$ and $x_{max} = \delta$
+\\
+\par Furthermore, using equation~\ref{eqn:V^e}, the ball's equilibrium position at which the equilibrium voltage attains a maximum can be determined.
+\\
+\begin{figure}[h]
+\label{fig:B1Diagram}
+ \centering
+ \includegraphics[width=0.6\linewidth]{Figures/B1.eps}
+ \caption{Nature of the equilibrium values of $x^e$ and $V^e$ in the system using equation~\ref{eqn:V^e} when simulated in Python.}
+\end{figure}
+
+\par As presented in figure~\ref{fig:B1Diagram}, the maximum voltage is approximately equal to 0.2 volts where the equilibrium position is equal to 0.467 metres.
 
 \begin{lstlisting}[language=python]
 
