@@ -572,47 +572,50 @@ where $K_p, K_d, K_i$ are the controller gains and $a1, a2, a3, a4$ are the vari
 \subsection{C1}
 \par Given $f(t) = \ln{t^3}$, $t>0$:
 \begin{equation}
-    \rightarrow f(t) = 3\ln{t}, t>0
+    f(t) = 3\ln{t}, t>0
     \notag
 \end{equation}
 
-\par Now, Laplace transform of $f(t)$ is
+\par Applying the Laplace transform to $f(t)$
 
 \begin{align}
-    F(s) &= \int_0^\infty e^{-st} f(t) \cdot dt
+    F(s) &= \int_0^\infty e^{-st} f(t) dt
     \notag\\
-    &= \int_0^\infty e^{-st} \cdot 3\ln{t} \cdot dt
+    &= \int_0^\infty e^{-st} \cdot 3\ln{t} dt
     \label{eqn:C1Lap}
 \end{align}
 
-\par Set $st = u$
-
-\begin{align}
-    \rightarrow sdt = du
-    \notag\\
-    \rightarrow dt = \frac{du}{s}
-    \label{eqn:C1s}
-\end{align}
-
-\par Inserting ~\ref{eqn:C1s} into ~\ref{eqn:C1Lap}:
-
-\begin{align}
-    F(s) &= \frac{3}{s} \int_0^\infty e^{-u} \cdot \ln{\bigg(\frac{u}{s}\bigg)} \cdot du
-    \notag\\
-    &= \frac{3}{s} \int_0^\infty e^{-u} \cdot \ln{u} \cdot du - \frac{3}{s} \int_0^\infty e^{-u} \cdot \ln{s} \cdot du
-    \notag\\
-    &= \frac{3}{5}(-\gamma) - \frac{3}{5}\ln{s}\bigg[\frac{e^{-4}}{-1}\bigg]_0^\infty
-    \notag\\
-    &= \frac{3}{5}(-\gamma) - \frac{3}{5}\ln{s}[0+1]
-    \notag\\
-    &= -\frac{3}{5}\bigg(\ln(s) + \gamma\bigg)
-    \notag
-\end{align}
+\par Setting $u = st$ and differentiating for t obtains:
+\begin{align*}
+    t &{}={} \frac{u}{s}
+    \\
+    dt &{}={} \frac{1}{s} du
+\end{align*}
+\par Inserting into \ref{eqn:C1Lap}:
+\begin{align*}
+    F(s) &= \int_0^\infty e^{-u}  3\ln{\bigg(\frac{u}{s}\bigg)}\bigg(\frac{1}{s}\bigg)  du
+    \\
+    &= \frac{3}{s} \int_0^\infty e^{-u}  \ln(u)-\ln(s) du
+    \\
+    &= \frac{3}{s} \bigg(\int_0^\infty e^{-u} \ln(u) du - \ln(s)\int_0^\infty e^{-u} du\bigg)
+    \\
+    &= \frac{3}{s} \bigg(\int_0^\infty e^{-u} \ln(u) du + \ln(s)[e^{-u}]\big\rvert^\infty_0\bigg)
+    \\
+    &= \frac{3}{s} \bigg(\int_0^\infty e^{-u} \ln(u) du + \ln(s)[0-1]\bigg)
+    \\
+    &= \frac{3}{s} \bigg(\int_0^\infty e^{-u} \ln(u) du -\ln(s)\bigg)
+    \\
+\end{align*}
 \\
-\par Where $\gamma$ is the Euler's constant. Therefore, the Laplace transform of $f(t)$ is:
+\par The integral $\int_0^\infty e^{-u} \ln(u) du$ can be defined by the Euler-Mascheroni constant:
+\begin{equation}
+    \int_0^\infty e^{-u} \ln(u) du = -\gamma
+\end{equation}
+\\
+\par Therefore, the Laplace transform of $f(t)=\ln{t^3}$ can be defined as:
 
 \begin{equation}
-    -\frac{3}{5}\bigg(\ln(s) + \gamma\bigg)
+   F(s) = \lap\{\ln{(t^3)}\}(s) = -\frac{3}{s}\bigg(\gamma + ln(s)\bigg)
 \end{equation}
 
 \newpage
