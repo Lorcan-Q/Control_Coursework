@@ -36,5 +36,5 @@ tf2 = ctrl.TransferFunction(1, [1, a3_val, -a2_val])
 Gx = a1_val * a4_val * ctrl.series(tf1, tf2)
 
 ctrl.bode(Gx, dB=True)  # LFA appx = -10dB HFA appx.= -10 - 60log(w)
-plt.suptitle("B4 - Bode Plot")
+plt.suptitle("B4 - Bode Plot", fontsize=16, fontweight='bold')
 plt.show()

@@ -28,7 +28,7 @@ def linear_system(state, t):
     xd = state[1]
     I = state[2]
 
-    ve = R * (delta - xe) * ((k * (xe - d) - m * g * np.sin(phi)) ** 0.5)
+    ve = R * (delta - xe) * (((k * (xe - d)) - (m * g * np.sin(phi))) ** 0.5)
     ve /= (c ** 0.5)
     Ie = ve/R
 
@@ -38,7 +38,7 @@ def linear_system(state, t):
     a4_val = 1 / (L0 + (L1 * np.exp((-alpha * (delta-xe)))))
 
     xdd = (a1_val*(I - Ie)) + (a2_val*(x-xe)) - (a3_val*(xd-0))
-    Id = a4_val * ((ve-ve) - R * (I-Ie))
+    Id = a4_val * ((ve-ve) - (R * (I-Ie)))
 
     return [xd, xdd, Id]
 
