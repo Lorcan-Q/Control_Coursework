@@ -147,7 +147,7 @@
     \label{eqn:torque}
 \end{align}
 
-\par Then, by using the arc equation; $s=R(-\theta)$ and equation~\ref{eqn:torque}, $\ddot{\theta}$ can be taken as $-\frac{\ddot{x}}{R}$ which means the torque can be defined as:
+The equation defining the length or a given arc of a circle is defined as $x=R(\theta)$. However, as counter-clockwise rotations are taken as negative in the model and the ball rotates clockwise, the equation results in  $x=R(-\theta)$. Differentiating this equation, $\ddot{\theta}=\frac{\ddot{-x}}{R}$. Thus, the torque can be defined as:
 
 \begin{align}
     T=-\frac{I}{R}(\frac{-\ddot{x}}{R}) = \frac{I\ddot{x}}{R}
@@ -169,23 +169,39 @@
 \\
 \par To describe how the input voltage $V$ affects the position $x$ of the ball on the inclined plane, an equation for how the electromagnet behaves can be derived. This is achieved using, $V_{in}=V_R+V_L$, $V_R=RI$ and $V_L=L\dot{I}$
 
-\begin{gather}
-    V_L=V_{in}-V_R
+\begin{align}
+    V_L&{}={}V_{in}-V_R
     \notag\\
-    L\dot{I}=V-RI
+    L\dot{I}&{}={}V-RI
     \notag\\
-    \dot{I}=\frac{1}{L}(V-RI)
+    \dot{I}&{}={}\frac{1}{L}(V-RI)
     \notag\\
-    \dot{I}=\frac{1}{L_O+L_1e^{-\alpha(\delta-x)}}(V-RI)
-\end{gather}
+    \dot{I}&{}={}\frac{1}{L_O+L_1e^{-\alpha(\delta-x)}}(V-RI)
+\end{align}
 
+The dynamics of the system can be described by the following ordinary differential equations:
+\begin{align}
+    \frac{7m\ddot{x}}{5}&{}={}mg\sin{\phi}+c[\frac{I}{\delta-x}]^2-k(x-d)-b\dot{x}
+    \notag
+    \\
+    \dot{I}&{}={}\frac{1}{L_O+L_1e^{-\alpha(\delta-x)}}(V-RI)
+    \label{eqn:Non-Linear Sys}
+\end{align}
 \subsection{A2 - State Space Representation}\label{sec:A2}
 
-\par The state space representation equation will be in the form of equation~\ref{eqn:ssr} below:
+\parModelling the system in the state space representation will describe the system in terms of its states and inputs. As the model involves terms that are non-linear, utilising the state space representation will enable the linearisation of these terms to be preformed. State variables are created to reduce the ordinary differential equations to the first-order:
 
 \begin{equation}
-\label{eqn:ssr}
+\label{eqn:state vars}
 \bm{z}=
+\begin{bmatrix}
+z_1
+\\
+z_2
+\\
+z_3
+\end{bmatrix}
+=
 \begin{bmatrix}
 x
 \\
@@ -194,30 +210,16 @@ x
 I
 \end{bmatrix}
 \end{equation}
-
-\par where:
-
-\begin{equation}
-\begin{bmatrix}
-z_1=x
 \\
-z_2=\dot{z_1}
-\\
-z_3=I
-\end{bmatrix},
-\end{equation}
-
+Inserting the state variables \ref{eqn:state vars}, into the system equations \ref{eqn:Non-Linear Sys} 
 \begin{equation}
     \dot{z_2}=\frac{5}{7m}(mg\sin{\phi}+c[\frac{z_3}{(\delta-z_1)}]-k(z_1-d)-bz_2)
 \end{equation}
-\\
-\par Then, written in state space representation, the equation derived in part~\ref{sec:A1} will be displayed as shown below:
-
 \begin{equation}
     \dot{z_3}=\frac{V-z_3R}{L_o+L_1^{-\alpha(\delta-x)}}
 \end{equation}
-
-
+\\
+The state space representation is defined below, with states $z1, z2, z3$ (defined in \ref{eqn:state vars}) and input V;
 
 \begin{equation}
 \bm{\dot{z}}=
@@ -443,8 +445,7 @@ Hence, a damping factor $0 < \zeta < 1$, would create a negative discriminant in
 
 \par As presented in figure~\ref{fig:B1Diagram}, the maximum voltage is approximately equal to 0.2 volts where the equilibrium position is equal to 0.467 metres.
 
-\begin{lstlisting}[language=python]
-
-\end{lstlisting}
+%\begin{lstlisting}[language=python]
+%\end{lstlisting}
 
 \end{document}
